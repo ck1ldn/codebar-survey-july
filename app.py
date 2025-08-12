@@ -68,3 +68,21 @@ satisfaction_chart = alt.Chart(satisfaction_counts).mark_bar().encode(
 
 # Display in Streamlit
 st.altair_chart(satisfaction_chart, use_container_width=True)
+
+
+attendance_counts = df['How many events have you attended since January 2025'] \
+    .dropna() \
+    .value_counts() \
+    .reset_index()
+
+attendance_counts.columns = ['Events Attended', 'Count']
+
+chart = alt.Chart(attendance_counts).mark_bar().encode(
+    x=alt.X('Events Attended', title='Number of Events Attended'),
+    y=alt.Y('Count', title='Number of Participants'),
+    tooltip=['Events Attended', 'Count']
+).properties(
+    title='Participant Event Attendance Since January 2025'
+)
+
+st.altair_chart(chart, use_container_width=True)

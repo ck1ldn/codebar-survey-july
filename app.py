@@ -137,3 +137,23 @@ workshop_chart = alt.Chart(grouped).mark_bar().encode(
 )
 
 st.altair_chart(workshop_chart, use_container_width=True)
+
+
+# Count Yes/No answers
+progress_counts = df['Do you feel codebar has helped you progress in your tech career'] \
+    .value_counts() \
+    .reset_index()
+progress_counts.columns = ['Progress', 'Count']
+
+# Create chart
+progress_chart = alt.Chart(progress_counts).mark_bar().encode(
+    x=alt.X('Progress', title='Has codebar helped you progress?'),
+    y=alt.Y('Count', title='Number of Respondents'),
+    tooltip=['Progress', 'Count']
+).properties(
+    title='Impact of codebar on Career Progression'
+)
+
+# Display chart in Streamlit
+st.altair_chart(progress_chart, use_container_width=True)
+

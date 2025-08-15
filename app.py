@@ -107,3 +107,33 @@ recommend_chart = alt.Chart(recommend_counts).mark_bar().encode(
 )
 
 st.altair_chart(recommend_chart, use_container_width=True)
+
+
+# Filter out missing values
+df_filtered = df[
+    df['Which chapters have you attended'].notnull() & 
+    df['How would you rate the overall quality of codebar workshops?'].notnull()
+]
+
+# Group by chapter and workshop rating
+grouped = df_filtered.groupby(
+    ['Which chapters have you attended', 'How would you rate the overall quality of codebar workshops?']
+).size().reset_index(name='count')
+
+# Build stacked bar chart
+workshop_chart = alt.Chart(grouped).mark_bar().encode(
+    x=alt.X('Which chapters have you attended', sort=None, title='Chapters'),
+    y=alt.Y('count', title='Number of Responses'),
+    color='How would you rate the overall quality of codebar workshops?',
+     tooltip=[
+        alt.Tooltip('Which chapters have you attended', title='Chapter'),
+        alt.Tooltip('How would you rate the overall quality of codebar workshops?', title='Rating'),
+        alt.Tooltip('count', title='Count')
+    ]
+).properties(
+    title='Workshop Quality Ratings by Chapter',
+    width=700,
+    height=400
+)
+
+st.altair_chart(workshop_chart, use_container_width=True)

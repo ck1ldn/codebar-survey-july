@@ -86,3 +86,24 @@ chart = alt.Chart(attendance_counts).mark_bar().encode(
 )
 
 st.altair_chart(chart, use_container_width=True)
+
+
+# Recommendation chart
+recommend_counts = (
+    df['How likely are you to recommend codebar to a friend or colleague?']
+    .dropna()
+    .value_counts()
+    .reset_index()
+)
+recommend_counts.columns = ['Recommendation', 'Count']
+recommend_counts['Percentage'] = (recommend_counts['Count'] / recommend_counts['Count'].sum() * 100).round(1)
+
+recommend_chart = alt.Chart(recommend_counts).mark_bar().encode(
+    x=alt.X('Recommendation', sort='-y', title='Likelihood to Recommend'),
+    y=alt.Y('Percentage', title='Percentage of Responses'),
+    tooltip=['Recommendation', 'Count', 'Percentage']
+).properties(
+    title='Likelihood to Recommend codebar'
+)
+
+st.altair_chart(recommend_chart, use_container_width=True)

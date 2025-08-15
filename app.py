@@ -16,7 +16,7 @@ def load_data(url):
 
 df = load_data(csv_url)
 
-st.title("July Pulsecheck Survey")
+st.title("July PulseCheck Survey")
 st.markdown("Chapter attendees by gender")
 
 # Filter out unwanted answers
